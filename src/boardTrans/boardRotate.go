@@ -10,7 +10,11 @@
 */
 package boardTrans
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+	"os/exec"
+)
 
 func Rotate(blocks *[][]int, isClockwise bool) {
 	board := *blocks
@@ -52,16 +56,21 @@ func Transpose(blocks *[][]int) {
 }
 
 func ShowBoard(b *[][]int) {
+	// clean the console first
+	cmd := exec.Command("cmd", "/c", "cls")
+	cmd.Stdout = os.Stdout
+	cmd.Run()
 	space := " "
 	for _, l := range *b {
-		fmt.Print("\r\t\t\t\t\t\t\t\t\t")
+		fmt.Print("\t\t\t\t\t\t\t")
 		for _, i := range l {
+			// 1 47 30
 			if i != 0 {
-				fmt.Printf("%c[1;47;30m%5d\t%c[0m", 0x1B, i, 0x1B)
+				fmt.Printf("%c[1;44;37m%5d\t%c[0m", 0x1B, i, 0x1B)
 			} else {
-				fmt.Printf("%c[1;47;30m%5s\t%c[0m", 0x1B, space, 0x1B)
+				fmt.Printf("%c[1;44;37m%5s\t%c[0m", 0x1B, space, 0x1B)
 			}
-			fmt.Print(" ")
+			fmt.Print(space)
 		}
 		fmt.Printf("\n\n")
 	}

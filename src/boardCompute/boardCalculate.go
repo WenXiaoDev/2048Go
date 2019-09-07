@@ -3,6 +3,7 @@ package boardCompute
 import (
 	"boardTrans"
 	"fmt"
+	"github.com/nsf/termbox-go"
 	"math/rand"
 	"time"
 )
@@ -12,27 +13,33 @@ type zeroSite struct {
 	y int
 }
 
-func Calculate(blocks [][]int, direction string, emptyPtr *int) [][]int {
+func Calculate(blocks [][]int, emptyPtr *int) [][]int {
 	var result [][]int
-	switch direction {
-	case "w":
-		result, *emptyPtr = computeUpper(blocks)
-	case "a":
-		boardTrans.Rotate(&blocks, true)
-		result, *emptyPtr = computeUpper(blocks)
-		boardTrans.Rotate(&result, false)
-	case "s":
-		boardTrans.FlipUpright(&blocks)
-		result, *emptyPtr = computeUpper(blocks)
-		boardTrans.FlipUpright(&result)
-	case "d":
-		boardTrans.Rotate(&blocks, false)
-		result, *emptyPtr = computeUpper(blocks)
-		boardTrans.Rotate(&result, true)
+	switch ev := termbox.PollEvent(); ev.Type {
+	case termbox.EventKey:
+		switch ev.Key {
+		// up left down right
+		case termbox.KeyArrowUp:
+			result, *emptyPtr = computeUpper(blocks)
+		case termbox.KeyArrowLeft:
+			boardTrans.Rotate(&blocks, true)
+			result, *emptyPtr = computeUpper(blocks)
+			boardTrans.Rotate(&result, false)
+		case termbox.KeyArrowDown:
+			boardTrans.FlipUpright(&blocks)
+			result, *emptyPtr = computeUpper(blocks)
+			boardTrans.FlipUpright(&result)
+		case termbox.KeyArrowRight:
+			boardTrans.Rotate(&blocks, false)
+			result, *emptyPtr = computeUpper(blocks)
+			boardTrans.Rotate(&result, true)
+		default:
+			result = blocks
+		}
+		return result
 	default:
-		result = blocks
+		return blocks
 	}
-	return result
 }
 
 func computeUpper(board [][]int) ([][]int, int) {

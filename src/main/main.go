@@ -1,18 +1,8 @@
-package main
-
-import (
-	"fmt"
-	"gamePlay"
-)
-
-const (
-	BOARDSIZE = 4
-)
-
-func main() {
-	fmt.Print("Game 2048 in Golang.\n")
-	/*
-		initBoard()
+/*
+golang 实现无缓冲输入(getch())：
+	1.用cgo调用内嵌c语言代码 需要将mingw32换成mingw64
+	2.第三方库 termbox-go
+	initBoard()
 		boardRun()
 			inputMonitor()
 				verify input string
@@ -25,6 +15,15 @@ func main() {
 			go lossCondition()
 			Calculate()
 			flag <- c
-	*/
-	gamePlay.GameRun()
+*/
+package main
+
+import (
+	"fmt"
+	"gamePlay"
+)
+
+func main() {
+	fmt.Print("\tGame 2048 in Golang.\n")
+	gamePlay.Test()
 }
